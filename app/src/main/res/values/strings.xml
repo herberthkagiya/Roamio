@@ -1,3 +1,18 @@
 <resources>
+    <string name="preference_file_key">com.kagiya.roamio.PREFERENCE_FILE_KEY</string>
+
     <string name="app_name">Roamio</string>
+
+
+    <!--Onboarding-->
+    <string name="onboarding_title_1">Lets explore\nthe world</string>
+    <string name="onboarding_description_1">Let\'s explore the world with us with just a few clicks</string>
+    <string name="onboarding_button_1">Next</string>
+    <string name="onboarding_title_2">Visit tourist\nattactions</string>
+    <string name="onboarding_description_2">Find thousands of tourist destinations ready for you to visit</string>
+    <string name="onboarding_button_2">Next</string>
+    <string name="onboarding_title_3">Get ready for\nnext trip</string>
+    <string name="onboarding_description_3">Plan you trip and get the best experience of your life</string>
+    <string name="onboarding_button_3">Get Started</string>
+
 </resources>
