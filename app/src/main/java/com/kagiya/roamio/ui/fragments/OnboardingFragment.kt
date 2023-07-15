@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.kagiya.roamio.R
 import com.kagiya.roamio.adapters.OnboardingAdapater
 import com.kagiya.roamio.databinding.FragmentOnboardingBinding
@@ -68,6 +69,7 @@ class OnboardingFragment : Fragment(R.layout.fragment_onboarding) {
                 buttonText = R.string.onboarding_button_3
             ) {
                 setAlreadSawOnboarding()
+                findNavController().popBackStack()
             },
         )
 
@@ -80,7 +82,8 @@ class OnboardingFragment : Fragment(R.layout.fragment_onboarding) {
     }
 
     private fun setAlreadSawOnboarding(){
-        val sharedPref = activity?.getPreferences(Context.MODE_PRIVATE) ?: return
+
+        val sharedPref = activity?.getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE) ?: return
         with (sharedPref.edit()) {
             putBoolean(COMPLETED_ONBOARDING_PREF_NAME, false)
             apply()

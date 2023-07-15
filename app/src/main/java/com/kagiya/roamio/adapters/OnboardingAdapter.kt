@@ -8,7 +8,7 @@ import com.kagiya.roamio.ui.fragments.OnboardingFragment
 
 
 class OnboardingAdapater(
-    val items: List<OnboardingFragment.OnboardingItem>
+    private val items: List<OnboardingFragment.OnboardingItem>
 ): RecyclerView.Adapter<OnboardingHolder>() {
 
 
@@ -38,6 +38,7 @@ class OnboardingHolder(val binding: ItemOnboardingBinding) : RecyclerView.ViewHo
         binding.title.setText(item.title)
         binding.description.setText(item.description)
         binding.button.setText(item.buttonText)
+
         binding.button.setOnClickListener{
             item.onButtonClicked()
         }
