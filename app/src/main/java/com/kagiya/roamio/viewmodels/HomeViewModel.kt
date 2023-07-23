@@ -4,8 +4,13 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kagiya.roamio.data.network.OpenTripMapRepository
+import com.kagiya.roamio.data.network.Place
 import dagger.hilt.android.AndroidEntryPoint
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -14,32 +19,41 @@ private const val TAG = "HomeViewModel"
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-    repository: OpenTripMapRepository
+    private val repository: OpenTripMapRepository
 ): ViewModel() {
 
 
-    init {
-        Log.d(TAG, "ViewModelInitialized")
+    private val _uiState: MutableStateFlow<UiState?> = MutableStateFlow(UiState(emptyList()))
+    val uiState  = _uiState.asStateFlow()
+
+
+    fun fetchRecommendedPlaces(){
+        var response: List<Place>? = emptyList()
 
         try{
-            val response = viewModelScope.launch{
-                repository.getRecommendedPlaces(
+            viewModelScope.launch{
+                response = repository.getRecommendedPlaces(
                     200000,
                     "-41.4613",
                     "-12.2507",
-                   "json",
-                    20
+                    "json",
+                    5
                 )
-            }
 
-            Log.d(TAG, response.toString())
+                _uiState.update { oldState ->
+                    oldState?.copy(
+                        recommendedPlaces = response
+                    )
+                }
+            }
         }
         catch (ex: Exception){
-            Log.e(TAG, "Error at getting recomended places", ex)
+            Log.e(TAG, "Error: getting recomended places failed", ex)
         }
     }
 
-    fun test(){
-        Log.d("TEST", "ViewModelInitialized")
-    }
+
+    data class UiState(
+        val recommendedPlaces: List<Place>?
+    )
 }
