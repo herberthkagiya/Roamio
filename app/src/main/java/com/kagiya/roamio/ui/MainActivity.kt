@@ -7,6 +7,7 @@ import android.os.Build
 import android.os.Bundle
 import android.view.View
 import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentActivity
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
@@ -14,9 +15,10 @@ import androidx.navigation.ui.setupWithNavController
 import com.kagiya.roamio.R
 import com.kagiya.roamio.databinding.MainActivityBinding
 import com.kagiya.roamio.ui.fragments.OnboardingFragment
+import dagger.hilt.android.AndroidEntryPoint
 
-
-class MainActivity : FragmentActivity() {
+@AndroidEntryPoint
+class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: MainActivityBinding
 
