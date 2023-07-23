@@ -3,6 +3,8 @@ package com.kagiya.roamio.data.network
 import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
-data class RecommendedPlacesResponse (
-    val result : List<PlaceId>
+data class WikipediaExtracts(
+    val html: String?,
+    val text: String?,
+    val title: String?
 )

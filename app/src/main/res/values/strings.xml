@@ -15,11 +15,15 @@
     <string name="onboarding_description_3">Plan you trip and get the best experience of your life</string>
     <string name="onboarding_button_3">Get Started</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <!--Bottom Menu-->
     <string name="home_menu_button">Home</string>
     <string name="favorites_menu_button">Favorites</string>
     <string name="chat_menu_button">Chat</string>
     <string name="profile_menu_button">Profile</string>
+    
+    <!--Home Screen-->
+    <string name="search_encouragement">Where do you\nwant to explore today?</string>
+    <string name="search_hint">Search destination</string>
+    <string name="recommended_label">Recommended places</string>
 
 </resources>

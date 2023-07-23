@@ -3,7 +3,7 @@ package com.kagiya.roamio.data.network
 import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
-data class Place(
+data class PlaceId(
     val xid: String?,
     val name: String?,
     val dist: Double?,

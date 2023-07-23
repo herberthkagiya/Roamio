@@ -1,34 +1,40 @@
 package com.kagiya.roamio.api
 
-import com.kagiya.roamio.data.network.Place
-import com.kagiya.roamio.data.network.RecommendedPlacesResponse
+import com.kagiya.roamio.BuildConfig
+import com.kagiya.roamio.data.network.PlaceId
+import com.kagiya.roamio.data.network.PlaceDetails
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import okhttp3.logging.HttpLoggingInterceptor.Level
-import retrofit2.Call
-import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.http.GET
+import retrofit2.http.Path
 import retrofit2.http.Query
 
 
 interface OpenTripMapService {
 
     @GET("places/radius")
-    suspend fun getRecommendedPlaces(
+    suspend fun fetchRecommendedPlacesIds(
         @Query("radius") radius: Int,
         @Query("lon") longitude: String,
         @Query("lat") latitude: String,
         @Query("format") format: String,
         @Query("limit") limit: Int
-    ): List<Place>
+    ): List<PlaceId>
+
+
+    @GET ("places/xid/{id}")
+    suspend fun getPlaceDetails(@Path("id") placeId: String) : PlaceDetails
+
 
 
     companion object{
-        val language = "en"
-        val BASE_URL = "https://api.opentripmap.com/0.1/en/"
+
+        private const val BASE_URL = "https://api.opentripmap.com/0.1/en/"
+        private const val OPEN_TRIP_MAP_API_KEY = BuildConfig.OPEN_TRIP_MAP_API_KEY
 
 
         private val apiKeyInterceptor = Interceptor { chain ->
@@ -37,7 +43,7 @@ interface OpenTripMapService {
 
             val newUrl = originalRequest.url
                 .newBuilder()
-                .addQueryParameter("apikey", "5ae2e3f221c38a28845f05b62e89bd3f0e62c18988ba8d6665dd4367")
+                .addQueryParameter("apikey", OPEN_TRIP_MAP_API_KEY)
                 .build()
 
             val newRequest = originalRequest.newBuilder()
@@ -47,7 +53,7 @@ interface OpenTripMapService {
             chain.proceed(newRequest)
         }
 
-        val loggerInterceptor = HttpLoggingInterceptor().apply { level = Level.BODY}
+        private val loggerInterceptor = HttpLoggingInterceptor().apply { level = Level.BODY}
 
         private val client = OkHttpClient.Builder()
             .addInterceptor(apiKeyInterceptor)

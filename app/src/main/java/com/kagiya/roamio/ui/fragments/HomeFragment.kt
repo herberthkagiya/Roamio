@@ -10,9 +10,12 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.coroutineScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.kagiya.roamio.R
+import com.kagiya.roamio.adapters.RecommendedAdapter
 import com.kagiya.roamio.api.OpenTripMapService
 import com.kagiya.roamio.data.network.OpenTripMapRepository
+import com.kagiya.roamio.databinding.FragmentHomeBinding
 import com.kagiya.roamio.viewmodels.HomeViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -23,10 +26,13 @@ class HomeFragment : Fragment() {
 
     private val viewModel: HomeViewModel by viewModels()
 
+    private lateinit var binding: FragmentHomeBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        viewModel.fetchRecommendedPlaces()
+        viewModel.fetchRecommendedPlacesIds()
+        viewModel.fetchRecommendedPlacesDetails()
     }
 
 
@@ -34,7 +40,9 @@ class HomeFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_home, container, false)
+        binding = FragmentHomeBinding.inflate(inflater, container, false)
+        binding.recommendedRecyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        return binding.root
     }
 
 
@@ -43,12 +51,15 @@ class HomeFragment : Fragment() {
         viewLifecycleOwner.lifecycle.coroutineScope.launch {
             viewLifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED){
 
-                viewModel.uiState.collect{
-                    Log.d("Reco", it?.recommendedPlaces.toString())
-                }
+                viewModel.uiState.collect{ uiState ->
+                    viewModel.fetchRecommendedPlacesDetails()
 
+                        binding.recommendedRecyclerView.adapter =
+                            uiState.recommendedPlacesDetails?.let {
+                                RecommendedAdapter(it)
+                            }
+                }
             }
         }
-
     }
 }

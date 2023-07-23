@@ -4,11 +4,10 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kagiya.roamio.data.network.OpenTripMapRepository
-import com.kagiya.roamio.data.network.Place
-import dagger.hilt.android.AndroidEntryPoint
+import com.kagiya.roamio.data.network.PlaceId
+import com.kagiya.roamio.data.network.PlaceDetails
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -23,16 +22,21 @@ class HomeViewModel @Inject constructor(
 ): ViewModel() {
 
 
-    private val _uiState: MutableStateFlow<UiState?> = MutableStateFlow(UiState(emptyList()))
+    private val _uiState: MutableStateFlow<UiState> = MutableStateFlow(
+        UiState(
+            recommendedPlaceIds = emptyList(),
+            recommendedPlacesDetails = emptyList()
+        )
+    )
     val uiState  = _uiState.asStateFlow()
 
 
-    fun fetchRecommendedPlaces(){
-        var response: List<Place>? = emptyList()
+    fun fetchRecommendedPlacesIds(){
+        var placeIds: List<PlaceId>? = emptyList()
 
         try{
             viewModelScope.launch{
-                response = repository.getRecommendedPlaces(
+                placeIds = repository.getRecommendedPlacesIds(
                     200000,
                     "-41.4613",
                     "-12.2507",
@@ -41,8 +45,8 @@ class HomeViewModel @Inject constructor(
                 )
 
                 _uiState.update { oldState ->
-                    oldState?.copy(
-                        recommendedPlaces = response
+                    oldState.copy(
+                        recommendedPlaceIds = placeIds
                     )
                 }
             }
@@ -53,7 +57,30 @@ class HomeViewModel @Inject constructor(
     }
 
 
+
+    fun fetchRecommendedPlacesDetails(){
+
+        var response: List<PlaceDetails>? = emptyList()
+
+        try{
+            viewModelScope.launch{
+
+                response = uiState.value?.recommendedPlaceIds?.let { repository.fetchPlaceDetails(it) }
+
+                _uiState.update { oldState ->
+                    oldState.copy(
+                        recommendedPlacesDetails = response
+                    )
+                }
+            }
+        }
+        catch (ex: Exception){
+            Log.e(TAG, "Error: getting recomended places failed", ex)
+        }
+    }
+
     data class UiState(
-        val recommendedPlaces: List<Place>?
+        val recommendedPlaceIds: List<PlaceId>?,
+        val recommendedPlacesDetails: List<PlaceDetails>?
     )
 }
