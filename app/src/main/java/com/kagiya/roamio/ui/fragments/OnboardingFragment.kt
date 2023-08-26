@@ -83,7 +83,9 @@ class OnboardingFragment : Fragment(R.layout.fragment_onboarding) {
 
     private fun setAlreadSawOnboarding(){
 
-        val sharedPref = activity?.getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE) ?: return
+        val sharedPref = activity?.getSharedPreferences(
+            getString(R.string.preference_file_key),
+            Context.MODE_PRIVATE) ?: return
         with (sharedPref.edit()) {
             putBoolean(COMPLETED_ONBOARDING_PREF_NAME, false)
             apply()

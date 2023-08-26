@@ -21,6 +21,7 @@ interface OpenTripMapService {
         @Query("radius") radius: Int,
         @Query("lon") longitude: String,
         @Query("lat") latitude: String,
+        @Query("rate") rate: String,
         @Query("format") format: String,
         @Query("limit") limit: Int
     ): List<PlaceId>

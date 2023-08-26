@@ -38,8 +38,9 @@ class HomeViewModel @Inject constructor(
             viewModelScope.launch{
                 placeIds = repository.getRecommendedPlacesIds(
                     200000,
-                    "-41.4613",
-                    "-12.2507",
+                    "139.4232",
+                    " 35.421",
+                    "3h",
                     "json",
                     5
                 )

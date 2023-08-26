@@ -16,6 +16,7 @@ class OpenTripMapRepository @Inject constructor(
         radius: Int,
         longitude: String,
         latitude: String,
+        rate: String,
         format: String,
         limit: Int
     ): List<PlaceId> {
@@ -24,6 +25,7 @@ class OpenTripMapRepository @Inject constructor(
             radius,
             longitude,
             latitude,
+            rate,
             format,
             limit
         )

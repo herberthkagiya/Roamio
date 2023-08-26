@@ -38,7 +38,7 @@ class RecommendedViewHolder (
             binding.placeImageBackground.setImageResource(R.drawable.onboarding_image_2)
         }
         else{
-            binding.placeImageBackground.load(recommendedPlace.image)
+            binding.placeImageBackground.load(recommendedPlace.preview?.source)
         }
 
         binding.placeName.text = recommendedPlace.name
