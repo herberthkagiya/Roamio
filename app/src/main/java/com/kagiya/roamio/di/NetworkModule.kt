@@ -1,14 +1,10 @@
 package com.kagiya.roamio.di
 
-import android.content.Context
 import com.kagiya.roamio.api.OpenTripMapService
-import com.kagiya.roamio.data.network.OpenTripMapRepository
+import com.kagiya.roamio.data.network.PlacesRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.components.ViewModelComponent
-import dagger.hilt.android.qualifiers.ApplicationContext
-import dagger.hilt.android.scopes.ViewModelScoped
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
@@ -26,7 +22,7 @@ class NetworkModule {
     @Singleton
     fun provideOpenTripMapRepository(
         service: OpenTripMapService
-    ) : OpenTripMapRepository{
-        return OpenTripMapRepository(service)
+    ) : PlacesRepository{
+        return PlacesRepository(service)
     }
 }

@@ -1,7 +1,6 @@
 package com.kagiya.roamio.ui.fragments
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -11,15 +10,11 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.coroutineScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.kagiya.roamio.R
 import com.kagiya.roamio.adapters.RecommendedAdapter
-import com.kagiya.roamio.api.OpenTripMapService
-import com.kagiya.roamio.data.network.OpenTripMapRepository
 import com.kagiya.roamio.databinding.FragmentHomeBinding
 import com.kagiya.roamio.viewmodels.HomeViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class HomeFragment : Fragment() {
@@ -50,14 +45,14 @@ class HomeFragment : Fragment() {
 
         viewLifecycleOwner.lifecycle.coroutineScope.launch {
             viewLifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED){
-
                 viewModel.uiState.collect{ uiState ->
+
                     viewModel.fetchRecommendedPlacesDetails()
 
-                        binding.recommendedRecyclerView.adapter =
-                            uiState.recommendedPlacesDetails?.let {
-                                RecommendedAdapter(it)
-                            }
+                    binding.recommendedRecyclerView.adapter =
+                        uiState.recommendedPlacesDetails?.let {
+                            RecommendedAdapter(it)
+                        }
                 }
             }
         }

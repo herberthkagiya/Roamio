@@ -2,13 +2,12 @@ package com.kagiya.roamio.data.network
 
 import android.util.Log
 import com.kagiya.roamio.api.OpenTripMapService
-import retrofit2.http.Query
 import javax.inject.Inject
 
 private const val TAG = "OpenTripMapRepository"
 
 
-class OpenTripMapRepository @Inject constructor(
+class PlacesRepository @Inject constructor(
     private val service: OpenTripMapService
 ){
 
@@ -40,14 +39,11 @@ class OpenTripMapRepository @Inject constructor(
 
         var placesDetails: List<PlaceDetails> = emptyList()
 
-        try{
-            placeIds.forEach{ place ->
-                 placesDetails += getPlaceDetails(place.xid.toString())
-            }
+
+        placeIds.forEach{ place ->
+            placesDetails += getPlaceDetails(place.xid.toString())
         }
-        catch (ex: Exception){
-            Log.d(TAG, "Error: failed at fetching places details")
-        }
+
 
         return placesDetails
     }

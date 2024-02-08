@@ -3,7 +3,7 @@ package com.kagiya.roamio.viewmodels
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.kagiya.roamio.data.network.OpenTripMapRepository
+import com.kagiya.roamio.data.network.PlacesRepository
 import com.kagiya.roamio.data.network.PlaceId
 import com.kagiya.roamio.data.network.PlaceDetails
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -18,7 +18,7 @@ private const val TAG = "HomeViewModel"
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-    private val repository: OpenTripMapRepository
+    private val repository: PlacesRepository
 ): ViewModel() {
 
 
