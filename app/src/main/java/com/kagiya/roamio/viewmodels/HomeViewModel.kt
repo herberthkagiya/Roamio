@@ -1,8 +1,10 @@
 package com.kagiya.roamio.viewmodels
 
+import android.app.Activity
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.android.gms.location.FusedLocationProviderClient
 import com.kagiya.roamio.data.network.PlacesRepository
 import com.kagiya.roamio.data.network.PlaceId
 import com.kagiya.roamio.data.network.PlaceDetails
@@ -31,15 +33,19 @@ class HomeViewModel @Inject constructor(
     val uiState  = _uiState.asStateFlow()
 
 
-    fun fetchRecommendedPlacesIds(){
+
+    fun fetchRecommendedPlacesIds(
+        longitude: String,
+        latitude: String
+    ){
         var placeIds: List<PlaceId>? = emptyList()
 
         try{
             viewModelScope.launch{
                 placeIds = repository.getRecommendedPlacesIds(
                     200000,
-                    "139.4232",
-                    " 35.421",
+                    longitude,
+                    latitude,
                     "3h",
                     "json",
                     5
@@ -56,8 +62,6 @@ class HomeViewModel @Inject constructor(
             Log.e(TAG, "Error: getting recomended places failed", ex)
         }
     }
-
-
 
     fun fetchRecommendedPlacesDetails(){
 
