@@ -1,7 +1,7 @@
 package com.kagiya.roamio.di
 
 import com.kagiya.roamio.api.OpenTripMapService
-import com.kagiya.roamio.data.network.PlacesRepository
+import com.kagiya.roamio.data.PlacesRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -22,7 +22,7 @@ class NetworkModule {
     @Singleton
     fun provideOpenTripMapRepository(
         service: OpenTripMapService
-    ) : PlacesRepository{
+    ) : PlacesRepository {
         return PlacesRepository(service)
     }
 }

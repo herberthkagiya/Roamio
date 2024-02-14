@@ -1,13 +1,11 @@
 package com.kagiya.roamio.viewmodels
 
-import android.app.Activity
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.google.android.gms.location.FusedLocationProviderClient
-import com.kagiya.roamio.data.network.PlacesRepository
-import com.kagiya.roamio.data.network.PlaceId
-import com.kagiya.roamio.data.network.PlaceDetails
+import com.kagiya.roamio.data.PlacesRepository
+import com.kagiya.roamio.data.models.PlaceId
+import com.kagiya.roamio.data.models.PlaceDetails
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -27,11 +25,10 @@ class HomeViewModel @Inject constructor(
     private val _uiState: MutableStateFlow<UiState> = MutableStateFlow(
         UiState(
             recommendedPlaceIds = emptyList(),
-            recommendedPlacesDetails = emptyList()
+            recommendedPlacesDetails = emptyList(),
         )
     )
     val uiState  = _uiState.asStateFlow()
-
 
 
     fun fetchRecommendedPlacesIds(
@@ -86,6 +83,6 @@ class HomeViewModel @Inject constructor(
 
     data class UiState(
         val recommendedPlaceIds: List<PlaceId>?,
-        val recommendedPlacesDetails: List<PlaceDetails>?
+        val recommendedPlacesDetails: List<PlaceDetails>?,
     )
 }

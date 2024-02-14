@@ -30,8 +30,10 @@ class HomeFragment : Fragment() {
     private lateinit var binding: FragmentHomeBinding
     private val gpsUtils = GPSUtils.instance
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
 
         getCurrentLocation()
         setRecommendedPlaces()
@@ -44,13 +46,14 @@ class HomeFragment : Fragment() {
     ): View? {
         binding = FragmentHomeBinding.inflate(inflater, container, false)
         binding.recommendedRecyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        //Start Shimmer
+        binding.shimmerContainer.startShimmer()
+        binding.recommendedRecyclerView.visibility = View.GONE
         return binding.root
     }
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-
-
 
         viewLifecycleOwner.lifecycle.coroutineScope.launch {
             viewLifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED){
@@ -62,9 +65,15 @@ class HomeFragment : Fragment() {
                         uiState.recommendedPlacesDetails?.let {
                             RecommendedAdapter(it)
                         }
+                    //Stop Shimmer
+                    binding.shimmerContainer.stopShimmer()
+                    //Hide Shimmer view
+                    binding.shimmerContainer.visibility = View.GONE
+                    binding.recommendedRecyclerView.visibility = View.VISIBLE
                 }
             }
         }
+
     }
 
 

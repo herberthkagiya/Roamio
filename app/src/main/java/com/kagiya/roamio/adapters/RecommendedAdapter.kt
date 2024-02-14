@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.kagiya.roamio.R
-import com.kagiya.roamio.data.network.PlaceDetails
+import com.kagiya.roamio.data.models.PlaceDetails
 import com.kagiya.roamio.databinding.ListItemRecommendedPlaceBinding
 
 class RecommendedAdapter(

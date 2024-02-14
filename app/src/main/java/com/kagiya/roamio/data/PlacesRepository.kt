@@ -1,11 +1,9 @@
-package com.kagiya.roamio.data.network
+package com.kagiya.roamio.data
 
-import android.util.Log
 import com.kagiya.roamio.api.OpenTripMapService
+import com.kagiya.roamio.data.models.PlaceDetails
+import com.kagiya.roamio.data.models.PlaceId
 import javax.inject.Inject
-
-private const val TAG = "OpenTripMapRepository"
-
 
 class PlacesRepository @Inject constructor(
     private val service: OpenTripMapService
@@ -31,7 +29,7 @@ class PlacesRepository @Inject constructor(
     }
 
 
-    suspend fun getPlaceDetails(id: String) : PlaceDetails{
+    suspend fun getPlaceDetails(id: String) : PlaceDetails {
         return service.getPlaceDetails(id)
     }
 

@@ -1,4 +1,4 @@
-package com.kagiya.roamio.data.network
+package com.kagiya.roamio.data.models
 
 import com.squareup.moshi.JsonClass
 

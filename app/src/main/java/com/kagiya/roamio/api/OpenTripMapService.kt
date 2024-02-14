@@ -1,8 +1,8 @@
 package com.kagiya.roamio.api
 
 import com.kagiya.roamio.BuildConfig
-import com.kagiya.roamio.data.network.PlaceId
-import com.kagiya.roamio.data.network.PlaceDetails
+import com.kagiya.roamio.data.models.PlaceId
+import com.kagiya.roamio.data.models.PlaceDetails
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
