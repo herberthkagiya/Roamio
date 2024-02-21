@@ -115,7 +115,7 @@ dependencies {
     //Location
     implementation 'com.google.android.gms:play-services-location:18.0.0'
 
-    //Skeleton Screens
+    //Shimmer effect
     implementation 'com.facebook.shimmer:shimmer:0.5.0'
 
     testImplementation 'junit:junit:4.13.2'

@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -46,14 +47,15 @@ class HomeFragment : Fragment() {
     ): View? {
         binding = FragmentHomeBinding.inflate(inflater, container, false)
         binding.recommendedRecyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+
         //Start Shimmer
         binding.shimmerContainer.startShimmer()
-        binding.recommendedRecyclerView.visibility = View.GONE
         return binding.root
     }
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+
 
         viewLifecycleOwner.lifecycle.coroutineScope.launch {
             viewLifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED){
@@ -65,15 +67,19 @@ class HomeFragment : Fragment() {
                         uiState.recommendedPlacesDetails?.let {
                             RecommendedAdapter(it)
                         }
-                    //Stop Shimmer
-                    binding.shimmerContainer.stopShimmer()
-                    //Hide Shimmer view
-                    binding.shimmerContainer.visibility = View.GONE
-                    binding.recommendedRecyclerView.visibility = View.VISIBLE
+
+                    checkIfRecommendedWasLoadedAndHideShimmer()
                 }
             }
         }
+    }
 
+    private fun checkIfRecommendedWasLoadedAndHideShimmer() {
+        if(viewModel.uiState.value.recommendedPlacesDetails?.isEmpty() == false){
+            binding.shimmerContainer.stopShimmer()
+            //Hide Shimmer view
+            binding.shimmerContainer.visibility = View.GONE
+        }
     }
 
 
