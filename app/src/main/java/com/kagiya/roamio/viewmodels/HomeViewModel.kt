@@ -1,17 +1,21 @@
 package com.kagiya.roamio.viewmodels
 
+import android.content.Context
+import android.net.ConnectivityManager
 import android.util.Log
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kagiya.roamio.data.PlacesRepository
-import com.kagiya.roamio.data.models.PlaceId
 import com.kagiya.roamio.data.models.PlaceDetails
+import com.kagiya.roamio.data.models.PlaceId
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+
 
 private const val TAG = "HomeViewModel"
 
@@ -48,6 +52,7 @@ class HomeViewModel @Inject constructor(
                     5
                 )
 
+
                 _uiState.update { oldState ->
                     oldState.copy(
                         recommendedPlaceIds = placeIds
@@ -67,7 +72,7 @@ class HomeViewModel @Inject constructor(
         try{
             viewModelScope.launch{
 
-                response = uiState.value?.recommendedPlaceIds?.let { repository.fetchPlaceDetails(it) }
+                response = uiState.value.recommendedPlaceIds?.let { repository.fetchPlaceDetails(it) }
 
                 _uiState.update { oldState ->
                     oldState.copy(

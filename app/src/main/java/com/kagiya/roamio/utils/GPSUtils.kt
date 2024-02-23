@@ -42,52 +42,58 @@ class GPSUtils {
     }
 
     private fun getLocation(activity: Activity) {
-        if (ActivityCompat.checkSelfPermission(
-                activity,
-                Manifest.permission.ACCESS_FINE_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
-                activity,
-                Manifest.permission.ACCESS_COARSE_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED
-        ) {
-            ActivityCompat.requestPermissions(
-                activity,
-                arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
-                REQUEST_LOCATION
-            )
-        } else {
-            val locationGps = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER)
-
-            val locationNetwork =
-                locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER)
-
-            val locationPassive =
-                locationManager.getLastKnownLocation(LocationManager.PASSIVE_PROVIDER)
-
-
-
-            if (locationGps != null) {
-                val lat = locationGps.latitude
-                val longi = locationGps.longitude
-                latitude = lat.toString()
-                longitude = longi.toString()
-
-            } else if (locationNetwork != null) {
-                val lat = locationNetwork.latitude
-                val longi = locationNetwork.longitude
-                latitude = lat.toString()
-                longitude = longi.toString()
-
-            } else if (locationPassive != null) {
-                val lat = locationPassive.latitude
-                val longi = locationPassive.longitude
-                latitude = lat.toString()
-                longitude = longi.toString()
+        try {
+            if (ActivityCompat.checkSelfPermission(
+                    activity,
+                    Manifest.permission.ACCESS_FINE_LOCATION
+                ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                    activity,
+                    Manifest.permission.ACCESS_COARSE_LOCATION
+                ) != PackageManager.PERMISSION_GRANTED
+            ) {
+                ActivityCompat.requestPermissions(
+                    activity,
+                    arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
+                    REQUEST_LOCATION
+                )
             } else {
-                Toast.makeText(activity, "Can't Get Your Location", Toast.LENGTH_SHORT).show()
-            }
+                val locationGps = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER)
 
-            Log.d("GPS", "$latitude,  $longitude")
+                val locationNetwork =
+                    locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER)
+
+                val locationPassive =
+                    locationManager.getLastKnownLocation(LocationManager.PASSIVE_PROVIDER)
+
+
+
+                if (locationGps != null) {
+                    val lat = locationGps.latitude
+                    val longi = locationGps.longitude
+                    latitude = lat.toString()
+                    longitude = longi.toString()
+
+                } else if (locationNetwork != null) {
+                    val lat = locationNetwork.latitude
+                    val longi = locationNetwork.longitude
+                    latitude = lat.toString()
+                    longitude = longi.toString()
+
+                } else if (locationPassive != null) {
+                    val lat = locationPassive.latitude
+                    val longi = locationPassive.longitude
+                    latitude = lat.toString()
+                    longitude = longi.toString()
+                } else {
+                    Toast.makeText(activity, "Can't Get Your Location", Toast.LENGTH_SHORT).show()
+                }
+
+                Log.d("GPS", "$latitude,  $longitude")
+            }
+        }
+        catch (ex: Exception){
+            Toast.makeText(activity, "Error at getting location", Toast.LENGTH_SHORT).show()
+            Log.e("GPS","Error at getting location", ex)
         }
     }
 

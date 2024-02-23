@@ -12,6 +12,7 @@ import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
+import java.util.concurrent.TimeUnit
 
 
 interface OpenTripMapService {
@@ -56,7 +57,11 @@ interface OpenTripMapService {
 
         private val loggerInterceptor = HttpLoggingInterceptor().apply { level = Level.BODY}
 
+
         private val client = OkHttpClient.Builder()
+            .connectTimeout(60, TimeUnit.SECONDS)
+            .writeTimeout(120, TimeUnit.SECONDS)
+            .readTimeout(60, TimeUnit.SECONDS)
             .addInterceptor(apiKeyInterceptor)
             .addInterceptor(loggerInterceptor)
             .build()

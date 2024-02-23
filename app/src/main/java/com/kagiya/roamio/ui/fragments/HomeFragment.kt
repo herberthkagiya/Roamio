@@ -1,24 +1,21 @@
 package com.kagiya.roamio.ui.fragments
 
-import android.Manifest
 import android.app.Activity
-import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.coroutineScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.android.gms.location.FusedLocationProviderClient
 import com.kagiya.roamio.adapters.RecommendedAdapter
 import com.kagiya.roamio.databinding.FragmentHomeBinding
 import com.kagiya.roamio.utils.GPSUtils
+import com.kagiya.roamio.utils.isNetworkAvailable
 import com.kagiya.roamio.viewmodels.HomeViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -35,16 +32,15 @@ class HomeFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-
         getCurrentLocation()
-        setRecommendedPlaces()
+        loadRecommendedPlacesIds()
     }
 
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentHomeBinding.inflate(inflater, container, false)
         binding.recommendedRecyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
 
@@ -61,7 +57,9 @@ class HomeFragment : Fragment() {
             viewLifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED){
                 viewModel.uiState.collect{ uiState ->
 
-                    viewModel.fetchRecommendedPlacesDetails()
+                    if(isNetworkAvailable(context)){
+                        viewModel.fetchRecommendedPlacesDetails()
+                    }
 
                     binding.recommendedRecyclerView.adapter =
                         uiState.recommendedPlacesDetails?.let {
@@ -88,11 +86,11 @@ class HomeFragment : Fragment() {
         gpsUtils.findDeviceLocation(activity as Activity)
     }
 
-    private fun setRecommendedPlaces(){
+    private fun loadRecommendedPlacesIds(){
         val longitude = gpsUtils.getLongitude()
         val latitude = gpsUtils.getLatitude()
 
-        if(longitude != null && latitude != null){
+        if((longitude != null && latitude != null) && isNetworkAvailable(context)){
             viewModel.fetchRecommendedPlacesIds(longitude, latitude)
         }
         viewModel.fetchRecommendedPlacesDetails()
