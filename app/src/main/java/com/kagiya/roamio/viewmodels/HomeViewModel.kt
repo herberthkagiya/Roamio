@@ -86,6 +86,10 @@ class HomeViewModel @Inject constructor(
         }
     }
 
+    fun isRecommendedAlreadyLoaded(): Boolean{
+        return _uiState.value.recommendedPlacesDetails?.isEmpty() == false
+    }
+
     data class UiState(
         val recommendedPlaceIds: List<PlaceId>?,
         val recommendedPlacesDetails: List<PlaceDetails>?,

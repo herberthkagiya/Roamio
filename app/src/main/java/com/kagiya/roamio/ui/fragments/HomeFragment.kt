@@ -23,7 +23,6 @@ import kotlinx.coroutines.launch
 @AndroidEntryPoint
 class HomeFragment : Fragment() {
 
-
     private val viewModel: HomeViewModel by viewModels()
     private lateinit var binding: FragmentHomeBinding
     private val gpsUtils = GPSUtils.instance
@@ -37,6 +36,15 @@ class HomeFragment : Fragment() {
     }
 
 
+    override fun onStart() {
+        super.onStart()
+
+        if(!viewModel.isRecommendedAlreadyLoaded()){
+            getCurrentLocation()
+            loadRecommendedPlacesIds()
+        }
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -49,15 +57,16 @@ class HomeFragment : Fragment() {
         return binding.root
     }
 
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+
 
 
         viewLifecycleOwner.lifecycle.coroutineScope.launch {
             viewLifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED){
                 viewModel.uiState.collect{ uiState ->
 
-                    if(isNetworkAvailable(context)){
+
+                    if(isNetworkAvailable(context) && !viewModel.isRecommendedAlreadyLoaded()){
                         viewModel.fetchRecommendedPlacesDetails()
                     }
 
@@ -69,6 +78,16 @@ class HomeFragment : Fragment() {
                     checkIfRecommendedWasLoadedAndHideShimmer()
                 }
             }
+        }
+
+        showMessageIfThereIsNoInternetOrLocation()
+    }
+
+    private fun showMessageIfThereIsNoInternetOrLocation() {
+        if((!isNetworkAvailable(context)) || (gpsUtils.getLatitude() == null || gpsUtils.getLongitude() == null)){
+            binding.errorMessageContainer.visibility = View.VISIBLE
+            binding.recommendedRecyclerView.visibility = View.GONE
+            binding.shimmerContainer.visibility = View.GONE
         }
     }
 
@@ -93,6 +112,6 @@ class HomeFragment : Fragment() {
         if((longitude != null && latitude != null) && isNetworkAvailable(context)){
             viewModel.fetchRecommendedPlacesIds(longitude, latitude)
         }
-        viewModel.fetchRecommendedPlacesDetails()
     }
+
 }

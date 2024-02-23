@@ -85,14 +85,14 @@ class GPSUtils {
                     latitude = lat.toString()
                     longitude = longi.toString()
                 } else {
-                    Toast.makeText(activity, "Can't Get Your Location", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(activity, "Can't Get Your Location", Toast.LENGTH_LONG).show()
                 }
 
                 Log.d("GPS", "$latitude,  $longitude")
             }
         }
         catch (ex: Exception){
-            Toast.makeText(activity, "Error at getting location", Toast.LENGTH_SHORT).show()
+            Toast.makeText(activity, "Error at getting location", Toast.LENGTH_LONG).show()
             Log.e("GPS","Error at getting location", ex)
         }
     }
