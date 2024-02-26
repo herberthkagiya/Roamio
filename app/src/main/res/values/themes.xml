@@ -25,6 +25,11 @@
         <item name="cornerSize">50%</item>
     </style>
 
+    <style name="Theme.Roamio.RoundedSquare">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">10%</item>
+    </style>
+
     <style name="Theme.Roamio.SearchView" parent="Widget.AppCompat.SearchView">
         <item name="android:textColorHint">@color/gray600</item>
         <item name="android:editTextColor">@color/black</item>

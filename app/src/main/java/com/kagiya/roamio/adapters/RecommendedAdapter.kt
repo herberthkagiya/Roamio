@@ -9,7 +9,8 @@ import com.kagiya.roamio.data.models.PlaceDetails
 import com.kagiya.roamio.databinding.ListItemRecommendedPlaceBinding
 
 class RecommendedAdapter(
-    private val recommendedPlaces: List<PlaceDetails>
+    private val recommendedPlaces: List<PlaceDetails>,
+    private val onRecommendedPlaceClicked: (placeId: String) -> Unit
 ) : RecyclerView.Adapter<RecommendedViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecommendedViewHolder {
@@ -19,7 +20,7 @@ class RecommendedAdapter(
     }
 
     override fun onBindViewHolder(holder: RecommendedViewHolder, position: Int) {
-        holder.bind(recommendedPlaces[position])
+        holder.bind(recommendedPlaces[position], onRecommendedPlaceClicked)
     }
 
     override fun getItemCount(): Int {
@@ -32,7 +33,11 @@ class RecommendedViewHolder (
     private val binding : ListItemRecommendedPlaceBinding
 ): RecyclerView.ViewHolder(binding.root){
 
-    fun bind(recommendedPlace : PlaceDetails){
+    fun bind(recommendedPlace : PlaceDetails, onRecommendedPlaceClicked: (placeId: String) -> Unit){
+
+        binding.root.setOnClickListener{
+            onRecommendedPlaceClicked(recommendedPlace.xid.toString())
+        }
 
         if(recommendedPlace.image == null){
             binding.placeImageBackground.setImageResource(R.drawable.onboarding_image_2)
