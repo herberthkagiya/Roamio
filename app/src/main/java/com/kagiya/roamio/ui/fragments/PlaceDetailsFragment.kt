@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.compose.runtime.collectAsState
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -23,6 +24,8 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.plus
 
 private const val TAG = "PlaceDetailsFragment"
+
+private const val MAX_PLACE_DESCRIPTION_LINES = 5
 
 @AndroidEntryPoint
 class PlaceDetailsFragment : Fragment() {
@@ -67,7 +70,13 @@ class PlaceDetailsFragment : Fragment() {
                         binding.placeName.text = details.name
                         binding.placeDescription.text = details.wikipedia_extracts?.text
 
+                        binding.showMoreLessDescription.setOnClickListener{
+                            setupShowMoreOrLessDescriptionButton()
+                        }
+
                         stopShimmer()
+                        binding.showMap.visibility = View.VISIBLE
+                        binding.showMoreLessDescription.visibility = View.VISIBLE
                     }
                 }
             }
@@ -77,5 +86,37 @@ class PlaceDetailsFragment : Fragment() {
     private fun stopShimmer(){
         binding.shimmerContainer.stopShimmer()
         binding.shimmerContainer.visibility = View.GONE
+    }
+
+    private fun setupShowMoreOrLessDescriptionButton(){
+
+        if(viewModel.uiState.value.isDescriptionExpanded){
+            binding.placeDescription.maxLines = MAX_PLACE_DESCRIPTION_LINES
+            viewModel.uiState.value.isDescriptionExpanded = false
+            changeTextFromShowMoreLessButton()
+        }
+        else{
+            binding.placeDescription.maxLines = Int.MAX_VALUE
+            viewModel.uiState.value.isDescriptionExpanded = true
+            changeTextFromShowMoreLessButton()
+        }
+    }
+
+    private fun changeTextFromShowMoreLessButton(){
+
+        if(viewModel.uiState.value.isDescriptionExpanded){
+            val showLessText = context?.getText(R.string.show_less_description)
+            binding.showMoreLessDescription.text = showLessText
+
+            val ic = context?.let { AppCompatResources.getDrawable(it, R.drawable.ic_show_less) }
+            binding.showMoreLessDescription.setCompoundDrawablesWithIntrinsicBounds(null, null, ic, null)
+        }
+        else{
+            val showMoreText = context?.getText(R.string.show_more_description)
+            binding.showMoreLessDescription.text = showMoreText
+
+            val ic = context?.let { AppCompatResources.getDrawable(it, R.drawable.ic_show_more) }
+            binding.showMoreLessDescription.setCompoundDrawablesWithIntrinsicBounds(null, null, ic, null)
+        }
     }
 }

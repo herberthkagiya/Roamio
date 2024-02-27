@@ -25,6 +25,11 @@
     <string name="search_encouragement">Where do you\nwant to explore today?</string>
     <string name="search_hint">Search destination</string>
     <string name="recommended_label">Recommended places</string>
+    
+    <!--Place Details Fragment-->
+    <string name="show_map">Show map</string>
+    <string name="show_more_description">Show more</string>
+    <string name="show_less_description">Show less</string>
 
     <!--Errors Messages-->
     <string name="connection_or_location_error_message_title">No internet connectivity or wasn\'t able to get your location</string>

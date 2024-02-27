@@ -53,4 +53,5 @@ class PlaceDetailsViewModel @Inject constructor(
 
 data class UiState(
     val placeDetails: List<PlaceDetails>?,
+    var isDescriptionExpanded: Boolean = false
 )
