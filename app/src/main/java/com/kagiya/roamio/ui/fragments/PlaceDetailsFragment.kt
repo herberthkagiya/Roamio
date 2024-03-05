@@ -13,6 +13,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.coroutineScope
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import coil.load
 import com.kagiya.roamio.R
@@ -70,16 +71,43 @@ class PlaceDetailsFragment : Fragment() {
                         binding.placeName.text = details.name
                         binding.placeDescription.text = details.wikipedia_extracts?.text
 
-                        binding.showMoreLessDescription.setOnClickListener{
-                            setupShowMoreOrLessDescriptionButton()
+                        if(isShowMoreOrLessButtonNecessary()){
+                            binding.showMoreLessDescription.visibility = View.VISIBLE
+
+                            binding.showMoreLessDescription.setOnClickListener{
+                                setupShowMoreOrLessDescriptionButton()
+                            }
                         }
+                        else{
+                            binding.showMoreLessDescription.visibility = View.GONE
+
+                        }
+
+                        binding.backButton.setOnClickListener(){
+                            findNavController().popBackStack()
+                        }
+
+                        setCityOrTownName(details.address?.city, details.address?.town)
+                        binding.stateName.text = details.address?.state
+
 
                         stopShimmer()
                         binding.showMap.visibility = View.VISIBLE
-                        binding.showMoreLessDescription.visibility = View.VISIBLE
                     }
                 }
             }
+        }
+    }
+
+    private fun setCityOrTownName(city: String?, town: String?) {
+        if(city != null){
+            binding.townName.text = city
+        }
+        else if(binding.townName.text != null && town != null){
+            binding.townName.text = town
+        }
+        else{
+            binding.townName.text = "????"
         }
     }
 
@@ -102,6 +130,13 @@ class PlaceDetailsFragment : Fragment() {
         }
     }
 
+    fun isShowMoreOrLessButtonNecessary() : Boolean{
+        return if(binding.placeDescription.lineCount >= MAX_PLACE_DESCRIPTION_LINES){
+            true
+        } else{
+            false
+        }
+    }
     private fun changeTextFromShowMoreLessButton(){
 
         if(viewModel.uiState.value.isDescriptionExpanded){
