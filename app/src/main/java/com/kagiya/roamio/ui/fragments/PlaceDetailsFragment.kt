@@ -71,6 +71,7 @@ class PlaceDetailsFragment : Fragment() {
                         binding.placeName.text = details.name
                         binding.placeDescription.text = details.wikipedia_extracts?.text
 
+
                         if(isShowMoreOrLessButtonNecessary()){
                             binding.showMoreLessDescription.visibility = View.VISIBLE
 
@@ -80,16 +81,17 @@ class PlaceDetailsFragment : Fragment() {
                         }
                         else{
                             binding.showMoreLessDescription.visibility = View.GONE
-
                         }
 
                         binding.backButton.setOnClickListener(){
                             findNavController().popBackStack()
                         }
 
+                        //Address
                         setCityOrTownName(details.address?.city, details.address?.town)
                         binding.stateName.text = details.address?.state
-
+                        binding.roadName.text = details.address?.road ?: "????"
+                        binding.countryName.text = details.address?.country ?: "????"
 
                         stopShimmer()
                         binding.showMap.visibility = View.VISIBLE
@@ -130,7 +132,7 @@ class PlaceDetailsFragment : Fragment() {
         }
     }
 
-    fun isShowMoreOrLessButtonNecessary() : Boolean{
+    private fun isShowMoreOrLessButtonNecessary() : Boolean{
         return if(binding.placeDescription.lineCount >= MAX_PLACE_DESCRIPTION_LINES){
             true
         } else{
