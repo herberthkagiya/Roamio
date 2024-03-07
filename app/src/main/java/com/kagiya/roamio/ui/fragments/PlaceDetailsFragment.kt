@@ -95,6 +95,11 @@ class PlaceDetailsFragment : Fragment() {
 
                         stopShimmer()
                         binding.showMap.visibility = View.VISIBLE
+                        binding.addressTitle.visibility = View.VISIBLE
+                        binding.townTitle.visibility = View.VISIBLE
+                        binding.roadTitle.visibility = View.VISIBLE
+                        binding.stateTitle.visibility = View.VISIBLE
+                        binding.countryTitle.visibility = View.VISIBLE
                     }
                 }
             }
